@@ -1,0 +1,76 @@
+<h2>POST</h2>
+
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Autor:</b>
+  <%= @post.name %>
+</p>
+
+<p>
+  <b>Título:</b>
+  <%= @post.title %>
+</p>
+
+<p>
+  <b>Texto:</b>
+  <%= @post.text %>
+</p>
+
+<p>
+  <b>Publicado:</b>
+  <%= @post.published %>
+</p>
+
+<hr>
+
+<h2>COMENTARIOS</h2>
+
+ <%= render @post.comments %>  <!--Lo que hace es que llama a _comment y muestra los comentarios-->
+ 
+<!-- 
+<% @post.comments.each do |comment| %>
+	<p><strong>Usuario: </strong><%= comment.commenter %> </p>
+	<p><strong>Comentario: </strong><%= comment.body %> </p>
+<hr style="border:1px dashed blue; width:1000px" />
+	
+<% end %>
+ -->
+</br>
+
+<hr>
+
+<h2>Añadir comentario</h2>
+
+<%= form_for([@post, @post.comments.build]) do |f| %>
+<!--   <% if @post.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h2>
+
+      <ul>
+      <% @post.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %> -->
+
+  <div class="field">
+    <%= f.label :Usuario %><br />
+    <%= f.text_field :commenter, :required => true %>
+  </div>
+
+  <div class="field">
+    <%= f.label :Comentario %><br />
+    <%= f.text_area :body, :required => true %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit  'Enviar'%>
+  </div>
+<% end %>
+
+
+
+<%= link_to 'Editar', edit_post_path(@post) %> |
+<%= link_to 'Atrás', posts_path %>

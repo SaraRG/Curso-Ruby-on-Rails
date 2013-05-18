@@ -1,0 +1,7 @@
+	<p><strong>Usuario: </strong><%= comment.commenter %> </p>
+	<p><strong>Comentario: </strong><%= comment.body %> </p>
+
+
+<%= link_to 'Eliminar', [comment.post, comment], method: :delete, data: { confirm: "¿Seguro que desea eliminar este comentario"} %>
+
+<hr style="border:1px dashed blue; width:1000px" />

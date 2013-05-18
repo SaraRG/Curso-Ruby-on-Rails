@@ -1,0 +1,100 @@
+Cadad vez que se inicie la aplicación con gemset hay que hacer /bin/bash --login para que cargue la aplicación, ya que es un fallo de kubuntu y ubuntu.
+
+Validaciones:
+
+usamos validate. --> esto sirve para pedir el nombre obligatoriamente y con prensece si no lo rellenas te da un error.
+
+
+Crear un campo nuevo en la tabla
+
+1º Creamos una migración:
+      rails generate migration AddPublishedToPosts published:boolean
+
+      generamos una migración
+      AddPublishedToPosts:  añadir el campo Published a la tabla post
+      published:boolean: decimos de que tipo es el campo published
+2º rake db:migrate
+
+3º Añadir el campo published al controlador attr_accesible
+
+
+Creamos un modelo:
+
+1ºrails g model Comment commenter:string body:text post:references
+
+    con references: le decimos que hacemos referencia al modelo post
+    Tenemos: C --> P    
+2º rake db:migrate
+
+3º Añadir al modelo post has_many para que sea P --> C1, C2, Cn....
+
+4ª vemos como se ha añadido:  add_index :comments, :post_id en la migración 2013512091814
+
+5º accedemos a routes y hacemos 
+
+    resources :posts do # las rutas son accesibles desde /post para ello lo metemos todo en un bloque
+	resources :comments
+    end
+  
+    lo ponemos fuera no podríamos acceder sino manualmente xk un comentario no existe por si solo sino a través de un post.
+6º Hay que generar un controlador que controlarar todos los comentarios xk todo modelo debe tener un controlador:  rails g controller Comments
+
+7ª Crear un formulario para poder insertar un comentario a un post.
+  
+    crear un formulario que recorre de el post seleccionado todos los comentarios que tiene para contruir (siempre es así): ([@post, @post.comments.build])
+    
+8º Añadimos los procedimientos (funciones) a el controlador del comentario para que pueda crear, mostrar, editar, etc un comentario.
+
+
+Vistas Parciales
+
+Se llaman con guión bajo 
+y para llamarlas hay que suar render (es meter una vista dentro de otra)
+
+
+cuando se borra un post se borra tb sus comentarios asociados
+ en el modelo del post añadimos al lado del has_many, :dependent => destroy
+ 
+ 
+ Con la gema gem 'railroady' --> se crean diagramas 
+ 
+  rake diagram:all
+  Mas información: https://github.com/preston/railroady
+  
+  
+Para autenticación de usuario: usa una librería externa la cual solo genera el modelo xk no hace falta tocar el controlador ni las vistas. (estaría la tabla usuarios suelta)
+
+1º gem 'devise'
+2º bundle
+3º rails g devise:install
+4º Configurar el fichero config/environments/development.rb
+5º Pegar: config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+6º No hace falta hacer el paso dos, xk la ruta ya esta definida.
+7º Paso tres añadir un par de lineas al layout.
+8º Gerear el modelo de usuario rails g devise User
+9º rake db:migrate
+10º Para generar las vistas y tunerlas --> rails g devise:views users [OPCIONAL]
+
+
+Para gestionar los usuarios RailsAdmin.
+
+
+
+Tareas:
+
+Añadir un editor de texto: WYSIWYG (TinyMCE)
+Añadir paginación al listado de Post (will_paginate, kaminari)
+Mejora la interfaz de usuario (Bootstrap)
+Modificar los formularios usando SimpleForm
+Asociaciones:
+  Un usuario tiene muchos post
+  Un usuario tiene muchos comentarios
+  Un comentario es de un usuario.
+  
+  
+  (aprobado --> 2)
+  (todos --> 10)
+
+  
+  
+
